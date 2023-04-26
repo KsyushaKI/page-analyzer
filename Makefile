@@ -11,4 +11,4 @@ install:
 lint:
 	poetry run flake8
 
-.PHONY: install lint dev start
+.PHONY: install lint start
