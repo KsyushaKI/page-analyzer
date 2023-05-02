@@ -26,6 +26,7 @@ with psycopg2.connect(DATABASE_URL) as conn:
         with open('database.sql') as f:
             curs.execute(f.read())
 
+
 @app.route('/', methods=('GET', 'POST'))
 def get_main_page():
     if request.method == 'POST':
