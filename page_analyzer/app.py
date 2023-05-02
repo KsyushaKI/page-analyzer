@@ -20,6 +20,11 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 DATABASE_URL = os.getenv('DATABASE_URL')
 
+with psycopg2.connect(DATABASE_URL) as conn:
+    conn.autocommit = True
+    with conn.cursor() as curs:
+        with open('database.sql') as f:
+            curs.execute(f.read())
 
 @app.route('/', methods=('GET', 'POST'))
 def get_main_page():
