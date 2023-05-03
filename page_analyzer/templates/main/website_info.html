@@ -50,7 +50,7 @@
                 </table>
             </div>
             <h2 class="mt-5 mb-3">Проверки</h2>
-            <form method="post" action="/urls/2/checks">
+            <form method="post" action="{{ url_for('check_website', id=id) }}">
                 <input type="submit" class="btn btn-primary" value="Запустить проверку">
             </form>
             <div>
@@ -66,14 +66,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for row in all_checked_info %}
                         <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            {% for column in row[:-1] %}
+                                {% if column %}
+                                <td>{{ column }}</td>
+                                {% else %}
+                                <td></td>
+                                {% endif %}
+                            {% endfor %}
                         </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>

@@ -34,12 +34,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for website in website_info %}
+                        {% for row in website_info %}
                         <tr>
-                          <td>{{ website[0] }}</td>
-                          <td><a href="{{ url_for('get_website_info', id=website[0]) }}">{{ website[1] }}</a></td>         
-                          <td></td>        
-                          <td></td>  
+                            <td>{{ row[0] }}</td>
+                            <td><a href="{{ url_for('get_website_info', id=row[0]) }}">{{ row[1] }}</a></td>
+                            {% for column in row[2:] %}
+                                {% if not column %}
+                                    <td></td>
+                                {% else %}
+                                    <td>{{ column }}</td>
+                                {% endif %}        
+                          {% endfor %}
                         </tr>
                         {% endfor %}          
                     </tbody>

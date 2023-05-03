@@ -80,7 +80,14 @@ def get_websites_list():
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as curs:
             conn.autocommit = True
-            curs.execute('SELECT id, name FROM urls ORDER BY id DESC')
+            curs.execute(
+                'SELECT urls.id, urls.name, '
+                'MAX(url_checks.created_at), url_checks.status_code '
+                'FROM urls LEFT JOIN url_checks '
+                'ON urls.id = url_checks.url_id '
+                'GROUP BY urls.id, url_checks.status_code '
+                'ORDER BY urls.id DESC'
+            )
             website_info = curs.fetchall()
     return render_template('main/websites_list.html', website_info=website_info)
 
@@ -93,8 +100,29 @@ def get_website_info(id):
             conn.autocommit = True
             curs.execute('SELECT * FROM urls WHERE id = %s', (id,))
             website_info = curs.fetchall()[0]
+            curs.execute(
+                'SELECT * FROM url_checks WHERE url_id = %s ORDER BY id DESC',
+                (id,)
+            )
+            all_checked_info = curs.fetchall()
     return render_template(
         'main/website_info.html',
+        id=id,
         messages=messages,
         website_info=website_info,
+        all_checked_info=all_checked_info,
     )
+
+
+@app.post('/urls/<int:id>/checks')
+def check_website(id):
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor() as curs:
+            conn.autocommit = True
+            curs.execute(
+                'INSERT INTO url_checks (id, created_at, url_id) '
+                'VALUES (DEFAULT, %s, %s)',
+                (date.today(), id,)
+                )
+    flash('Страница успешно проверена', 'success')
+    return redirect(url_for('get_website_info', id=id), code=307)
