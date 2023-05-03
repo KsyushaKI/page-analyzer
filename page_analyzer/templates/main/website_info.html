@@ -23,6 +23,8 @@
     {% for message in messages %}
         {% if message[0] == 'warning' %}
             <div class="alert alert-info" role="alert">{{ message[1] }}</div>
+        {% elif message[0] == 'error' %}   
+            <div class="alert alert-danger" role="alert">{{ message[1] }}</div>
         {% else %}
             <div class="alert alert-success" role="alert">{{ message[1] }}</div>
         {% endif %}

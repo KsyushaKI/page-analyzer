@@ -13,6 +13,7 @@ import psycopg2
 from urllib.parse import urlparse
 import validators
 from datetime import date
+import requests
 
 
 load_dotenv()
@@ -30,7 +31,7 @@ with psycopg2.connect(DATABASE_URL) as conn:
 @app.route('/', methods=('GET', 'POST'))
 def get_main_page():
     if request.method == 'POST':
-        get_form_value = request.form.get("url")
+        get_form_value = request.form.get("url").lower()
         get_parsed_url = urlparse(get_form_value)
         get_main_url = f"{get_parsed_url.scheme}://{get_parsed_url.netloc}"
         validate_url = validators.url(get_main_url)
@@ -120,9 +121,20 @@ def check_website(id):
         with conn.cursor() as curs:
             conn.autocommit = True
             curs.execute(
-                'INSERT INTO url_checks (id, created_at, url_id) '
-                'VALUES (DEFAULT, %s, %s)',
-                (date.today(), id,)
-                )
-    flash('Страница успешно проверена', 'success')
+                'SELECT name FROM urls WHERE id = %s',
+                (id,)
+            )
+            url_name = curs.fetchall()[0][0]
+            try:
+                r = requests.get(url_name, timeout=1.0)
+                if r.status_code == requests.codes.ok:
+                    curs.execute(
+                        'INSERT INTO url_checks '
+                        '(id, status_code, created_at, url_id) '
+                        'VALUES (DEFAULT, %s, %s, %s)',
+                        (r.status_code, date.today(), id,)
+                        )
+                    flash('Страница успешно проверена', 'success')
+            except requests.exceptions.RequestException:
+                flash('Произошла ошибка при проверке', 'error')
     return redirect(url_for('get_website_info', id=id), code=307)
