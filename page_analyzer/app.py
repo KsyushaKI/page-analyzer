@@ -5,7 +5,6 @@ from flask import (
     redirect,
     flash,
     url_for,
-    get_flashed_messages,
 )
 import os
 from dotenv import load_dotenv
@@ -29,14 +28,14 @@ with psycopg2.connect(DATABASE_URL) as conn:
             curs.execute(f.read())
 
 
-@app.route('/', methods=('GET', 'POST'))
+@app.route('/')
 def get_main_page():
-    return render_template('main/index.html')
+    return render_template('index.html')
 
 
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('main/page_not_found.html'), 404
+    return render_template('page_not_found.html'), 404
 
 
 @app.route('/urls', methods=('GET', 'POST'))
@@ -47,14 +46,9 @@ def get_websites_list():
         get_main_url = f"{get_parsed_url.scheme}://{get_parsed_url.netloc}"
         validate_url = validators.url(get_main_url)
         if len(get_form_value) > 255:
-            flash('URL превышает 255 символов', 'error')
-            messages = get_flashed_messages(
-                with_categories=True,
-                category_filter='error'
-            )
+            flash('URL превышает 255 символов', 'danger')
             return render_template(
-                'main/index.html',
-                messages=messages,
+                'index.html',
                 form_value=get_form_value,
             ), 422
 
@@ -74,7 +68,7 @@ def get_websites_list():
                         )
                         flash('Страница успешно добавлена', 'success')
                     else:
-                        flash('Страница уже существует', 'warning')
+                        flash('Страница уже существует', 'info')
                     curs.execute(
                         'SELECT id FROM urls WHERE name=%s',
                         (get_main_url,)
@@ -82,16 +76,11 @@ def get_websites_list():
                     id = curs.fetchall()[0][0]
             return redirect(url_for('get_website_info', id=id), code=307)
         else:
-            flash('Некорректный URL', 'error')
+            flash('Некорректный URL', 'danger')
             if not get_form_value:
-                flash('URL обязателен', 'error')
-            messages = get_flashed_messages(
-                with_categories=True,
-                category_filter='error'
-            )
+                flash('URL обязателен', 'danger')
             return render_template(
-                'main/index.html',
-                messages=messages,
+                'index.html',
                 form_value=get_form_value,
             ), 422
 
@@ -108,33 +97,32 @@ def get_websites_list():
                     'ORDER BY urls.id DESC'
                 )
                 website_info = curs.fetchall()
-    return render_template('main/websites_list.html', website_info=website_info)
+    return render_template('websites_list.html', website_info=website_info)
 
 
 @app.route('/urls/<int:id>', methods=('GET', 'POST'))
 def get_website_info(id):
     try:
-        messages = get_flashed_messages(with_categories=True)
         with psycopg2.connect(DATABASE_URL) as conn:
             with conn.cursor() as curs:
                 conn.autocommit = True
                 curs.execute('SELECT * FROM urls WHERE id = %s', (id,))
                 website_info = curs.fetchall()[0]
                 curs.execute(
-                    'SELECT * FROM url_checks WHERE url_id = %s '
+                    'SELECT id, status_code, h1, title, description, created_at '
+                    'FROM url_checks WHERE url_id = %s '
                     'ORDER BY id DESC',
                     (id,)
                 )
                 all_checked_info = curs.fetchall()
         return render_template(
-            'main/website_info.html',
+            'website_info.html',
             id=id,
-            messages=messages,
             website_info=website_info,
             all_checked_info=all_checked_info,
         )
     except IndexError:
-        return render_template('main/page_not_found.html'), 404
+        return render_template('page_not_found.html'), 404
 
 
 @app.post('/urls/<int:id>/checks')
@@ -149,7 +137,7 @@ def check_website(id):
             url_name = curs.fetchall()[0][0]
             code = {'code': ''}
             try:
-                r = requests.get(url_name)
+                r = requests.get(url_name, timeout=1.0)
                 code['code'] = r.status_code
             except requests.exceptions.RequestException as error:
                 app.logger.warning(error)
@@ -180,5 +168,5 @@ def check_website(id):
                 )
                 flash('Страница успешно проверена', 'success')
             else:
-                flash('Произошла ошибка при проверке', 'error')
+                flash('Произошла ошибка при проверке', 'danger')
     return redirect(url_for('get_website_info', id=id), code=307)

@@ -1,15 +1,11 @@
-DROP TABLE IF EXISTS url_checks;
-DROP TABLE IF EXISTS urls;
-
-
-CREATE TABLE urls (
+CREATE TABLE IF NOT EXISTS urls (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-    name varchar(255) UNIQUE,
-    created_at date
+    name varchar(255) UNIQUE NOT NULL,
+    created_at date NOT NULL
 );
 
 
-CREATE TABLE url_checks (
+CREATE TABLE IF NOT EXISTS url_checks (
     id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     status_code integer,
     h1 varchar(255),
