@@ -138,7 +138,7 @@ def check_website(id):
             url_name = curs.fetchall()[0][0]
             try:
                 r = requests.get(url_name, timeout=1.0)
-                if r.status_code == requests.codes.ok:
+                if r.status_code == 200:
                     content = r.text
                     soup = BeautifulSoup(content, 'html.parser')
                     h1_tag = soup.find('h1')
@@ -163,10 +163,6 @@ def check_website(id):
                         )
                     )
                     flash('Страница успешно проверена', 'success')
-                    return redirect(
-                        url_for('get_website_info', id=id),
-                        code=307
-                    )
             except requests.exceptions.RequestException:
                 flash('Произошла ошибка при проверке', 'error')
-                return redirect(url_for('get_website_info', id=id))
+    return redirect(url_for('get_website_info', id=id), code=307)
