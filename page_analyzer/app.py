@@ -137,32 +137,36 @@ def check_website(id):
             )
             url_name = curs.fetchall()[0][0]
             try:
-                r = requests.get(url_name, timeout=1.0)
-                if r.status_code == 200:
-                    content = r.text
-                    soup = BeautifulSoup(content, 'html.parser')
-                    h1_tag = soup.find('h1')
-                    title_tag = soup.find('title')
-                    meta_tag = soup.find('meta', attrs={"name": "description"})
-                    if h1_tag:
-                        h1_tag = soup.find('h1').getText()
-                    if title_tag:
-                        title_tag = soup.find('title').getText()
-                    if meta_tag:
-                        meta_tag = meta_tag.get("content")
-                    curs.execute(
-                        'INSERT INTO url_checks '
-                        '(id, status_code, h1, title, '
-                        'description, created_at, url_id) '
-                        'VALUES (DEFAULT, %s, %s, %s, %s, %s, %s)', (
-                            r.status_code,
-                            h1_tag,
-                            title_tag, meta_tag,
-                            date.today(),
-                            id
-                        )
+                r = requests.get(url_name)
+                r = r.status_code
+            except requests.exceptions.RequestException as error:
+                app.logger.warning(error)
+
+            if r == 200:
+                content = r.text
+                soup = BeautifulSoup(content, 'html.parser')
+                h1_tag = soup.find('h1')
+                title_tag = soup.find('title')
+                meta_tag = soup.find('meta', attrs={"name": "description"})
+                if h1_tag:
+                    h1_tag = soup.find('h1').getText()
+                if title_tag:
+                    title_tag = soup.find('title').getText()
+                if meta_tag:
+                    meta_tag = meta_tag.get("content")
+                curs.execute(
+                    'INSERT INTO url_checks '
+                    '(id, status_code, h1, title, '
+                    'description, created_at, url_id) '
+                    'VALUES (DEFAULT, %s, %s, %s, %s, %s, %s)', (
+                        r.status_code,
+                        h1_tag,
+                        title_tag, meta_tag,
+                        date.today(),
+                        id
                     )
-                    flash('Страница успешно проверена', 'success')
-            except requests.exceptions.RequestException:
+                )
+                flash('Страница успешно проверена', 'success')
+            else:
                 flash('Произошла ошибка при проверке', 'error')
     return redirect(url_for('get_website_info', id=id), code=307)
