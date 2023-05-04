@@ -46,6 +46,17 @@ def get_websites_list():
         get_parsed_url = urlparse(get_form_value)
         get_main_url = f"{get_parsed_url.scheme}://{get_parsed_url.netloc}"
         validate_url = validators.url(get_main_url)
+        if len(get_form_value) > 255:
+            flash('URL превышает 255 символов', 'error')
+            messages = get_flashed_messages(
+                with_categories=True,
+                category_filter='error'
+            )
+            return render_template(
+                'main/index.html',
+                messages=messages,
+                form_value=get_form_value,
+            ), 422
 
         if validate_url:
             with psycopg2.connect(DATABASE_URL) as conn:
@@ -136,13 +147,14 @@ def check_website(id):
                 (id,)
             )
             url_name = curs.fetchall()[0][0]
+            code = {'code': ''}
             try:
                 r = requests.get(url_name)
-                r = r.status_code
+                code['code'] = r.status_code
             except requests.exceptions.RequestException as error:
                 app.logger.warning(error)
 
-            if r == 200:
+            if code['code'] == 200:
                 content = r.text
                 soup = BeautifulSoup(content, 'html.parser')
                 h1_tag = soup.find('h1')
