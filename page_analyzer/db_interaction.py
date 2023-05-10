@@ -94,7 +94,7 @@ def add_full_data_to_url_checks(
         meta_tag,
         id,
         conn,
-        ):
+):
 
     sql = '''
         INSERT INTO url_checks (
