@@ -26,7 +26,7 @@ def db_connect():
         return conn
 
 
-db.make_sql_file_commands('database.sql', db_connect)
+db.make_sql_file_commands('database.sql', db_connect())
 
 
 @app.errorhandler(404)
@@ -41,7 +41,7 @@ def get_main_page():
 
 @app.get('/urls')
 def show_websites_list():
-    websites_list = db.get_websites_lists(db_connect)
+    websites_list = db.get_websites_lists(db_connect())
 
     return render_template('websites_list.html', websites_list=websites_list)
 
@@ -55,18 +55,18 @@ def make_websites_list():
         return render_template('index.html', form_value=form_value), 422
 
     else:
-        if not valid.is_data_exists_in_db(url, db_connect):
-            db.add_full_data_to_urls(url, db_connect)
+        if not valid.is_data_exists_in_db(url, db_connect()):
+            db.add_full_data_to_urls(url, db_connect())
 
-        id = db.get_id_by_url_from_urls(url, db_connect)
+        id = db.get_id_by_url_from_urls(url, db_connect())
 
         return redirect(url_for('show_website_info', id=id), code=307)
 
 
 @app.route('/urls/<int:id>', methods=('GET', 'POST'))
 def show_website_info(id):
-    website_info = db.get_website_info(id, db_connect)
-    all_checked_info = db.get_checked_website_info(id, db_connect)
+    website_info = db.get_website_info(id, db_connect())
+    all_checked_info = db.get_checked_website_info(id, db_connect())
 
     if not website_info:
         return render_template('page_not_found.html'), 404
@@ -81,7 +81,7 @@ def show_website_info(id):
 
 @app.post('/urls/<int:id>/checks')
 def check_website(id):
-    url_name = db.get_url_by_id_from_urls(id, db_connect)
+    url_name = db.get_url_by_id_from_urls(id, db_connect())
     status_code = parser.get_website_status_code(url_name)
 
     if status_code == 200:
@@ -94,7 +94,7 @@ def check_website(id):
             title_tag,
             meta_tag,
             id,
-            db_connect
+            db_connect()
         )
 
     return redirect(url_for('show_website_info', id=id), code=307)
