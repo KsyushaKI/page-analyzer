@@ -15,10 +15,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for row in website_info %}
+                        {% for row in websites_list %}
                         <tr>
                             <td>{{ row[0] }}</td>
-                            <td><a href="{{ url_for('get_website_info', id=row[0]) }}">{{ row[1] }}</a></td>
+                            <td><a href="{{ url_for('show_website_info', id=row[0]) }}">{{ row[1] }}</a></td>
                             <td>{{ row[2] if row[2] }}</td>
                             <td>{{ row[3] if row[3] }}</td>
                         </tr>
