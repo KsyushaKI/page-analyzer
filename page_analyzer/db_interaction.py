@@ -1,12 +1,4 @@
-from psycopg2 import connect
 from datetime import date
-
-
-def db_connect(db_url):
-    with connect(db_url) as conn:
-        conn.autocommit = True
-
-        return conn
 
 
 def make_sql_file_commands(file_path, conn):
