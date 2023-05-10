@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from os import getenv
 from flask import (
     Flask,
+    flash,
     render_template,
     request,
     redirect,
@@ -96,5 +97,9 @@ def check_website(id):
             id,
             db_connect()
         )
+        flash('Страница успешно проверена', 'success')
+
+    else:
+        flash('Произошла ошибка при проверке', 'danger')
 
     return redirect(url_for('show_website_info', id=id), code=307)

@@ -1,20 +1,14 @@
 from bs4 import BeautifulSoup
 import requests
-from flask import flash
 
 
 def get_website_status_code(url_name):
     status_code = ''
-
     try:
         status_code = requests.get(url_name, timeout=1.0).status_code
-        flash('Страница успешно проверена', 'success')
-
         return status_code
 
     except requests.exceptions.RequestException:
-        flash('Произошла ошибка при проверке', 'danger')
-
         return status_code
 
 
