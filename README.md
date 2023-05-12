@@ -4,7 +4,7 @@
 <p>Follow the following link to try: <a href="https://page-analyzer-ot9i.onrender.com/">Page analyzer</a></p>
 
 [![Actions Status](https://github.com/KsyushaKI/python-project-83/workflows/hexlet-check/badge.svg)](https://github.com/KsyushaKI/python-project-83/actions)
-![Lint Check](https://github.com/KsyushaKI/python-project-83/actions/workflows/github_action.yml/badge.svg)
+[![Lint Check](https://github.com/KsyushaKI/python-project-83/workflows/github-action/badge.svg)](https://github.com/KsyushaKI/python-project-83/actions) 
 [![Maintainability](https://api.codeclimate.com/v1/badges/103f5cdf5ae8928733b4/maintainability)](https://codeclimate.com/github/KsyushaKI/python-project-83/maintainability)
 
 </div>
