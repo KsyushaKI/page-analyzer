@@ -1,7 +1,7 @@
 from flask import flash
 import validators
 from urllib.parse import urlparse
-from page_analyzer.db_interaction import is_data_exist
+from page_analyzer.postgresql_analyzer.urls import is_data_exist
 
 
 def get_normalized_url(value):
@@ -25,8 +25,8 @@ def is_validate_value(value):
     return response_validate
 
 
-def is_data_exists_in_db(url, conn):
-    response = is_data_exist(url, conn)
+def is_data_exists_in_db(url):
+    response = is_data_exist(url)
     if not response:
         flash('Страница успешно добавлена', 'success')
     else:

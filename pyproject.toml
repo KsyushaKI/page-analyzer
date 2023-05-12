@@ -1,16 +1,15 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "A page analyzer is a website that analyzes specified pages for SEO suitability"
 authors = ["KsyushaKI <oksanaakadem39@gmail.com>"]
 readme = "README.md"
 packages = [{include = "page_analyzer"}]
 
 [tool.poetry.dependencies]
-python = ">=3.8.1"
+python = ">=3.10"
 gunicorn = "^20.1.0"
 flask = "^2.3.1"
-flake8 = "^6.0.0"
 psycopg2-binary = "^2.9.6"
 validators = "^0.20.0"
 python-dotenv = "^1.0.0"
@@ -18,6 +17,7 @@ requests = "^2.29.0"
 beautifulsoup4 = "^4.12.2"
 
 [tool.poetry.dev-dependencies]
+flake8 = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
