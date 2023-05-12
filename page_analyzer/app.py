@@ -84,7 +84,7 @@ def check_website(id):
             meta_tag,
             date.today(),
             id,
-            )
+        )
         flash('Страница успешно проверена', 'success')
     else:
         flash('Произошла ошибка при проверке', 'danger')
