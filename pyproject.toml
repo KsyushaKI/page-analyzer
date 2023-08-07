@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "page-analyzer"
 version = "0.1.0"
-description = "A page analyzer is a website that analyzes specified pages for SEO suitability"
+description = "Page Analyzer this is the website that analyzes specified pages for SEO suitability"
 authors = ["KsyushaKI <oksanaakadem39@gmail.com>"]
 readme = "README.md"
 packages = [{include = "page_analyzer"}]
