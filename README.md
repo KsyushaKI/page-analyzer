@@ -1,10 +1,10 @@
 <div align="center">
-<h1>Page Analyzer</h1>
+<h1><a href="https://page-analyzer-83.up.railway.app/">Page Analyzer</a></h1>
 <p>A page analyzer is a website that analyzes specified pages for SEO suitability</p>
-<p>Follow the following link to try: <a href="https://page-analyzer-ot9i.onrender.com/">Page analyzer</a></p>
+<p>Follow the following link to try: <a href="https://page-analyzer-83.up.railway.app/">Page analyzer</a></p>
 
-[![Actions Status](https://github.com/KsyushaKI/python-project-83/workflows/hexlet-check/badge.svg)](https://github.com/KsyushaKI/python-project-83/actions)
-[![Maintainability](https://api.codeclimate.com/v1/badges/103f5cdf5ae8928733b4/maintainability)](https://codeclimate.com/github/KsyushaKI/python-project-83/maintainability)
+[![Actions Status](https://github.com/KsyushaKI/page-analyzer/workflows/hexlet-check/badge.svg)](https://github.com/KsyushaKI/page-analyzer/actions)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ebf683019d6c00bdf95c/maintainability)](https://codeclimate.com/github/KsyushaKI/page-analyzer/maintainability)
 
 </div>
 
@@ -19,7 +19,7 @@ In this project the Bootstrap 5 framework along with Jinja2 template engine are 
 
 PostgreSQL is used as the object-relational database system with Psycopg library to work with PostgreSQL directly from Python.
 
-[Demo](https://page-analyzer-ot9i.onrender.com/)
+[Demo](https://page-analyzer-83.up.railway.app/)
 
 ### Features
 
