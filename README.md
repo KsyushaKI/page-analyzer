@@ -45,4 +45,4 @@ PostgreSQL is used as the object-relational database system with Psycopg library
 This is the third training project of the ["Python Developer"](https://ru.hexlet.io/programs/python) course on [Hexlet.io](https://hexlet.io)
 
 > GitHub [@KsyushaKI](https://github.com/KsyushaKI) &nbsp;&middot;&nbsp;
-> LinkedIn [@Oksana Karshakevich](https://www.linkedin.com/in/oksana-karshakevich-097663243/)
+> LinkedIn [@Oksana Karshakevich](https://www.linkedin.com/in/oksana-karshakevich/)

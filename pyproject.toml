@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "hexlet-code"
+name = "page-analyzer"
 version = "0.1.0"
 description = "A page analyzer is a website that analyzes specified pages for SEO suitability"
 authors = ["KsyushaKI <oksanaakadem39@gmail.com>"]
