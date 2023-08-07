@@ -7,6 +7,14 @@ load_dotenv()
 db_url = getenv('DATABASE_URL')
 
 
+def create_project_tables():
+    with connect(db_url) as conn:
+        conn.autocommit = True
+        with conn.cursor() as curs:
+            with open('database.sql') as f:
+                curs.execute(f.read())
+
+
 def execute_all_sql_commands_from_file(file_path):
     with connect(db_url) as conn:
         with conn.cursor() as curs:

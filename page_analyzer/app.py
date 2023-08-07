@@ -2,6 +2,7 @@ from page_analyzer import validate
 from page_analyzer import parser
 from page_analyzer.postgresql_analyzer import urls
 from page_analyzer.postgresql_analyzer import url_checks
+from page_analyzer.postgresql_analyzer import db_interaction as db
 from datetime import date
 from dotenv import load_dotenv
 from os import getenv
@@ -18,6 +19,8 @@ from flask import (
 load_dotenv()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = getenv('SECRET_KEY')
+
+db.create_project_tables()
 
 
 @app.errorhandler(404)
